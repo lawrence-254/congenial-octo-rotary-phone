@@ -4,12 +4,14 @@
   "description": "This is a MERN project that simulates a chat app, This project was done as a final project for the ALX fullstack software engineering programme",
   "main": "server.js",
   "scripts": {
+    "start": "nodemon server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Lawrence",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
-    "express": "^4.18.3"
+    "express": "^4.18.3",
+    "nodemon": "^3.1.0"
   }
 }
