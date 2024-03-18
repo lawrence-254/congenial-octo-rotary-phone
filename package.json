@@ -1,0 +1,14 @@
+{
+  "name": "congenial-octo-rotary-phone",
+  "version": "1.0.0",
+  "description": "This is a MERN project that simulates a chat app, This project was done as a final project for the ALX fullstack software engineering programme",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Lawrence",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.3"
+  }
+}
