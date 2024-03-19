@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // Define the schema for the chat model
-const chatSchema = new mongoose.Schema(
+const chatModel = new mongoose.Schema(
     {
         chatTitle: { type: String, trim: true },
         chatTypeGroup: { type: Boolean, default: false },
@@ -26,7 +26,7 @@ const chatSchema = new mongoose.Schema(
 );
 
 // Create a model based on the schema
-const Chat = mongoose.model('Chat', chatSchema);
+const Chat = mongoose.model('Chat', chatModel);
 
 // Export the model
 module.exports = Chat;
