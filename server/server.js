@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 });
 app.get('/api/chat', (req, res) => {
-    res.json(chats);
+    res.send(chats);
 });
 
 app.get('/api/chat/:id', (req, res) => {
