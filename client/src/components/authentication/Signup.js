@@ -57,8 +57,8 @@ function Signup() {
             </FormControl>
             <FormControl>
                 <FormLabel>Profile picture</FormLabel>
-                <Input type='file' onChange={(e) => {
-                    setName(e.target.value);
+                <Input accept='image/' type='file' onChange={(e) => {
+                    PostImage(e.target.files[0]);
                 }} />
             </FormControl>
         </VStack>
