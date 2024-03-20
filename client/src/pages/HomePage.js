@@ -10,8 +10,8 @@ function HomePage() {
         // alignItems="center"
         // height="100vh"
         >
-            <Box backgroundColor='teal' fontFamily='Style Script' fontWeight='400' borderRadius='md' p={4} m={4} fontSize="xl">
-                <Text fontSize="xl">Twitter</Text>
+            <Box backgroundColor='teal' fontFamily='Style Script' fontWeight='400' borderRadius='md' width='50vw' p={4} m={4} fontSize="xl">
+                <Text fontSize="50px" textAlign="center" align="center">Twitter</Text>
             </Box>
             <Box borderRadius='md' m={4}>
                 <Text></Text>
@@ -20,7 +20,7 @@ function HomePage() {
                         <Tab>LOGIN</Tab>
                         <Tab>SIGNUP</Tab>
                     </TabList>
-                    <TabPanels>
+                    <TabPanels backgroundColor='teal' width='50vw'>
                         <TabPanel>
                             <Login />
                         </TabPanel>
