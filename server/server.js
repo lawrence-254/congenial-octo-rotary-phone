@@ -5,6 +5,11 @@ const { chats } = require('./data/data');
 const dotenv = require('dotenv');
 dotenv.config();
 
+const db = require('./configs/db')
+
+
+db();
+
 const app = express();
 
 app.get('/', (req, res) => {
