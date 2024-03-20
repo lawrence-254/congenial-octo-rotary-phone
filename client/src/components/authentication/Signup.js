@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Box, Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, StackDivider, VStack } from '@chakra-ui/react';
+import theme from '../../utils/theme';
+
 
 
 function Signup() {
@@ -11,6 +13,7 @@ function Signup() {
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const toggleButton = () => { setShow(!show) };
+    const processImage = (pic) => { console.log('nnooo'); };
     return (
         <VStack
             divider={<StackDivider borderColor='gray.200' />}
@@ -58,9 +61,10 @@ function Signup() {
             <FormControl>
                 <FormLabel>Profile picture</FormLabel>
                 <Input accept='image/' type='file' onChange={(e) => {
-                    PostImage(e.target.files[0]);
+                    processImage(e.target.files[0]);
                 }} />
             </FormControl>
+            <Button colorScheme='teal' variant='solid'>Signup</Button>
         </VStack>
     )
 }

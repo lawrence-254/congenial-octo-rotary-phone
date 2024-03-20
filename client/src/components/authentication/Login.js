@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Box, Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, StackDivider, VStack } from '@chakra-ui/react';
+import theme from '../../utils/theme';
 
 
 function Login() {
@@ -35,6 +36,8 @@ function Login() {
           </InputRightElement>
         </InputGroup>
       </FormControl>
+      <Button colorScheme='gold' variant='solid'>Login</Button>
+
     </VStack>
   )
 }
