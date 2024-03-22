@@ -1,9 +1,18 @@
-import React from 'react'
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Container, Text, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import Login from '../components/authentication/Login';
 import Signup from '../components/authentication/Signup';
 
 function HomePage() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const userInfo = JSON.parse(localStorage.getItem('user'));
+        if (userInfo) {
+            navigate('/chats');
+        }
+    }, [navigate]);
     return (
         <Container centerContent
         // justifyContent="center"
