@@ -95,7 +95,7 @@ function Signup() {
             });
             setLoading(false);
         }
-    };
+
 
         // fetch('/api/user', {
         //     method: 'post',

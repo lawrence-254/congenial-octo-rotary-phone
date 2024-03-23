@@ -20,6 +20,7 @@ function ChatPage() {
 
     return (
         <div>
+            h1
             {chats.map(chat => (
                 <div key={chat._id}>
                     {/* Render chat details here */}
