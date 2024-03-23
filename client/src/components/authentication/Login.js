@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
-import { Box, Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, StackDivider, VStack, ChakraProvider } from '@chakra-ui/react';
+import { useToast, Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, StackDivider, VStack, ChakraProvider } from '@chakra-ui/react';
 import theme from '../../utils/theme';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 function Login() {
@@ -8,10 +10,55 @@ function Login() {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  //
+  const [loading, setLoading] = useState(false);
+  const toast = useToast()
+  const navigate = useNavigate();
 
 
   const toggleButton = () => { setShow(!show) };
-  const submitHandler = () => { console.log('yes'); };
+  const submitHandler = async () => {
+    setLoading(true);
+
+    if (!email || !password) {
+      alert('All fields are required');
+      setLoading(false);
+      return;
+    }
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+
+      const { data } = await axios.post('/api/user/login', {
+        email,
+        password,
+      }, config);
+
+      toast({
+        title: 'Account created.',
+        description: "We've created your account for you.",
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      });
+
+      localStorage.setItem('userCredentials', JSON.stringify(data));
+      setLoading(false);
+      navigate('/chats');
+    } catch (error) {
+      toast({
+        title: 'An Error Occurred',
+        description: error.response.data.message || 'Something went wrong.',
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      });
+      setLoading(false);
+    }
+  };
   return (
     <ChakraProvider theme={theme}>
       <VStack
