@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
-import { Box, Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, StackDivider, VStack, ChakraProvider } from '@chakra-ui/react';
+import { useToast, Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, StackDivider, VStack, ChakraProvider } from '@chakra-ui/react';
 import theme from '../../utils/theme';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -13,6 +15,10 @@ function Signup() {
     const [confirmPassword, setConfirmPassword] = useState('');
     // pic loading
     const [loading, setLoading] = useState(false);
+    const toast = useToast()
+    const navigate = useNavigate();
+
+
 
     const toggleButton = () => { setShow(!show) };
     const processImage = (pic) => {
@@ -38,37 +44,79 @@ function Signup() {
         }
 
     };
-    const submitHandler = () => {
+    const submitHandler = async () => {
         setLoading(true);
+
         if (!name || !email || !password || !confirmPassword) {
             alert('All fields are required');
             setLoading(false);
             return;
         }
+
         if (password !== confirmPassword) {
             alert('Passwords do not match');
             setLoading(false);
             return;
         }
-        fetch('http://localhost:5000/api/auth/signup', {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
+
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            const { data } = await axios.post('/api/user', {
                 name,
                 email,
                 password,
                 profilePic
-            })
-        }).then(res => res.json())
-            .then(data => {
-                console.log(data);
-                setLoading(false);
-            }).catch(err => {
-                console.log(err);
-                setLoading(false);
+            }, config);
+
+            toast({
+                title: 'Account created.',
+                description: "We've created your account for you.",
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
             });
+
+            localStorage.setItem('userCredentials', JSON.stringify(data));
+            setLoading(false);
+            navigate('/chats');
+
+        } catch (error) {
+            toast({
+                title: 'An Error Occurred',
+                description: error.response.data.message || 'Something went wrong.',
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            });
+            setLoading(false);
+        }
+    };
+
+        // fetch('/api/user', {
+        //     method: 'post',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         name,
+        //         email,
+        //         password,
+        //         profilePic
+        //     })
+        // }).then(res => res.json())
+        //     .then(data => {
+        //         console.log(data);
+        //         setLoading(false);
+
+        //     }).catch(err => {
+        //         console.log(err);
+        //         setLoading(false);
+        //     });
     };
     return (
         <ChakraProvider theme={theme}>
