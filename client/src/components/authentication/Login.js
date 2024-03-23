@@ -85,7 +85,8 @@ function Login() {
             </InputRightElement>
           </InputGroup>
         </FormControl>
-        <Button colorScheme='gold' variant='solid' onClick={submitHandler}>Login</Button>
+        <Button colorScheme='gold' variant='solid' onClick={submitHandler}
+          isLoading={loading}>Login</Button>
 
       </VStack>
     </ChakraProvider>

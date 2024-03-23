@@ -169,7 +169,7 @@ function Signup() {
                         processImage(e.target.files[0]);
                     }} />
                 </FormControl>
-                <Button colorScheme='gold' variant='solid' onClick={submitHandler}>Signup</Button>
+                <Button colorScheme='gold' variant='solid' onClick={submitHandler} isLoading={loading}>Signup</Button>
             </VStack>
         </ChakraProvider>
     )
