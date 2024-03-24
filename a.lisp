@@ -1,1 +1,0 @@
-{"_id":{"$oid":"65fe99ac5345321188e66f7f"},"name":"Chriss Griffin","email":"chrisie@mail.com","password":"$2a$10$dsbhwPYB2oRUZk8E17Ttee.mEmmsb6rnNn/lLhyKTbUWqaFlohM9K","picture":"../static/default.jpeg","createdAt":{"$date":{"$numberLong":"1711184300950"}},"updatedAt":{"$date":{"$numberLong":"1711184300950"}},"__v":{"$numberInt":"0"}}
