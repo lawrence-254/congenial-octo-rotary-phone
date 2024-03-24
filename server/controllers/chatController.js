@@ -109,4 +109,21 @@ const renameGroupChat = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { getChats, getMyChats, createGroupChat, renameGroupChat };
+const deleteGroupChat = asyncHandler(async (req, res) => {
+    const { chatId } = req.body;
+    if (!chatId) {
+        res.status(400);
+        throw new Error('Chat ID is required');
+    }
+    try {
+        await Chat.findByIdAndDelete(chatId);
+        res.status(200).json({ message: 'Chat deleted' });
+    } catch (error) {
+        console.error('Error deleting chat:', error);
+        res.status(500).json({ message: 'Failed to delete chat.' });
+    }
+});
+
+
+
+module.exports = { getChats, getMyChats, createGroupChat, renameGroupChat, deleteGroupChat };
