@@ -1,33 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
+import { ChatState } from '../context/ChatProvider';
+// import leftDrawer from '../components/leftDrawer';
+import { Box } from '@chakra-ui/react'
 
 function ChatPage() {
-    const [chats, setChats] = useState([]);
-
-    const fetchedChats = async () => {
-        try {
-            const response = await axios.get('/api/chat');
-            console.log(response.data);
-            setChats(response.data);
-        } catch (error) {
-            console.error('Error fetching chats:', error);
-        }
-    }
-
-    useEffect(() => {
-        fetchedChats();
-    }, []);
+    const { user } = ChatState();
 
     return (
-        <div>
-            h1
-            {chats.map(chat => (
-                <div key={chat._id}>
-                    {/* Render chat details here */}
-                    <p>{chat.chatName}</p>
-                    {/* Add more chat details as needed */}
-                </div>
-            ))}
+        <div style={{ width: '100vw' }}>
+            {/* {user && <leftDrawer />} */}
+            <Box>
+                {user && <h1>Welcome {user.name}</h1>}
+                {!user && <h1>Chat Page</h1>}
+            </Box>
         </div>
     );
 }
