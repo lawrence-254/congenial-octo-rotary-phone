@@ -13,7 +13,7 @@ const ChatProvider = ({ children }) => {
 
         if (!userInfo) {
             // navigate('/');
-            console.log('No user info found');
+            console.log('not found');
         }
     }, [navigate]);
 
