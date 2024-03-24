@@ -109,7 +109,7 @@ const renameGroupChat = asyncHandler(async (req, res) => {
     }
 });
 
-const deleteGroupChat = asyncHandler(async (req, res) => {
+const deleteChat = asyncHandler(async (req, res) => {
     const { chatId } = req.body;
     if (!chatId) {
         res.status(400);
@@ -154,4 +154,4 @@ const removeFromChat = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { getChats, getMyChats, createGroupChat, addToChat, renameGroupChat, deleteGroupChat, removeFromChat };
+module.exports = { getChats, getMyChats, createGroupChat, addToChat, renameGroupChat, deleteChat, removeFromChat };
