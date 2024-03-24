@@ -139,4 +139,19 @@ const addToChat = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { getChats, getMyChats, createGroupChat, addToChat, renameGroupChat, deleteGroupChat };
+const removeFromChat = asyncHandler(async (req, res) => {
+    const { chatId, chatParticipants } = req.body;
+    if (!chatId || !chatParticipants) {
+        res.status(400);
+        throw new Error('Chat ID and participants are required');
+    }
+    try {
+        const updatedChat = await Chat.findByIdAndUpdate(chatId, { $pull: { chatParticipants: chatParticipants } }, { new: true }).populate('chatParticipants', '-password').populate('latestMessage');
+        res.status(200).json(updatedChat);
+    } catch (error) {
+        console.error('Error removing from chat:', error);
+        res.status(500).json({ message: 'Failed to remove from chat.' });
+    }
+});
+
+module.exports = { getChats, getMyChats, createGroupChat, addToChat, renameGroupChat, deleteGroupChat, removeFromChat };
