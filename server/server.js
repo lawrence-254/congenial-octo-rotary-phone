@@ -20,6 +20,8 @@ app.get('/', (req, res) => {
 
 // Mount user routes under '/api/user'
 app.use('/api/user', userRoutes);
+// chat route
+app.use('/api/chat', require('./routes/chatRoutes'));
 
 // Middleware to handle 404 Not Found errors
 app.use(notFound);
