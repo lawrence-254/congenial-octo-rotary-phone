@@ -62,7 +62,7 @@ const allUsers = asyncHandler(async (req, res) => {
         ]
     } : {};
     const users = await User.find({ ...keyword });
-    res.json(users);
+    res.send(users);
 
     console.log(keyword);
 });
