@@ -12,7 +12,7 @@ const ChatProvider = ({ children }) => {
         setUser(userInfo);
 
         if (!userInfo) {
-            // navigate('/');
+            navigate('/');
             console.log('not found');
         }
     }, [navigate]);
