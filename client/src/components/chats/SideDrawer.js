@@ -9,6 +9,8 @@ import { Menu, MenuButton, MenuList, MenuItem, Tooltip } from '@chakra-ui/react'
 import { TbSquareRoundedChevronDown } from "react-icons/tb";
 import ProfileCard from './ProfileCard';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 import {
   useToast,
   Drawer,
@@ -28,7 +30,7 @@ const SideDrawer = () => {
   const navigate = useNavigate();
   //drawer
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const tb = useToast();
+  const toast = useToast();
   const { user } = ChatState();
   const logOutHandler = () => {
     localStorage.removeItem('userCredentials');
@@ -37,8 +39,7 @@ const SideDrawer = () => {
 
   }
 
-  const searchHandler = () => {
-    const toast = useToast();
+  const searchHandler = async () => {
     if (!search) {
       toast({
         title: 'Empty field.',
@@ -46,9 +47,35 @@ const SideDrawer = () => {
         status: 'warning',
         duration: 9000,
         isClosable: true,
+        position: 'top-left'
       });
+      return;
+
     }
-    return;
+    try {
+      setLoading(true);
+      // search for user
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`
+        }
+      };
+      const { data } = await axios.get(`/api/user/search?name=${search}`, config);
+      setLoading(false);
+      setSearchResult(data);
+    } catch (error) {
+      toast({
+        title: 'Error.',
+        description: "Failed to load search result.",
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom-left'
+      });
+      console.log(error);
+      setLoading(false);
+    }
   }
 
   return (
@@ -103,7 +130,7 @@ const SideDrawer = () => {
         isOpen={isOpen}
         placement='left'
         onClose={onClose}
-        finalFocusRef={btnRef}
+
       >
         <DrawerOverlay />
         <DrawerContent>
@@ -117,10 +144,42 @@ const SideDrawer = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <Button ref={btnRef} colorScheme='teal' onClick={searchHandler}>
+              <Button colorScheme='teal' onClick={searchHandler}>
                 <FcSearch />
               </Button>
             </Box>
+            {loading ? (
+              <Text>Loading...</Text>
+            ) : searchResult.length === 0 ? (
+              <Text>No user found.</Text>
+            ) : (
+              searchResult.map((user) => (
+                <Box
+                  key={user._id}
+                  d='flex'
+                  justifyContent='space-between'
+                  alignItems='center'
+                  p={2}
+                  borderWidth='1px'
+                  borderRadius='5px'
+                >
+                  <Avatar size='sm' name={user.name} src={user.picture} />
+                  <Text>{user.name}</Text>
+                  <Button
+                    colorScheme='teal'
+                    size='sm'
+                    onClick={() => {
+                      // create chat
+                      console.log('Create chat with:', user);
+                    }}
+                    isLoading={loadingChat}
+                  >
+                    Chat
+                  </Button>
+                </Box>
+              ))
+            )}
+
 
           </DrawerBody>
 
