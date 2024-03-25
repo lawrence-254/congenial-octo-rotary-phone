@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button, Text, useDisclosure } from '@chakra-ui/react'
+import { Button, IconButton, Text, useDisclosure } from '@chakra-ui/react'
+import { GrView } from "react-icons/gr";
 import {
     Modal,
     ModalOverlay,
@@ -35,7 +36,8 @@ const ProfileCard = ({ user, children }) => {
                 setOverlay(<OverlayOne />)
                 onOpen()
             }}
-            >{children}</span>:()}
+            >{children}</span> : (<IconButton icon={<GrView />} d={{ base: 'flex' }}
+                onClick={onOpen} />)}
             <Modal isCentered isOpen={isOpen} onClose={onClose}>
                 {overlay}
                 <ModalContent>
@@ -49,6 +51,7 @@ const ProfileCard = ({ user, children }) => {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
+
         </>
     )
 }

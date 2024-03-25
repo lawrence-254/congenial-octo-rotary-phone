@@ -19,7 +19,7 @@ const SideDrawer = () => {
 
   return (
     <Box
-      d={{ base: 'block', md: 'flex' }}
+      d='flex'
       justifyContent='space-between'
       alignItems='center'
       bg='white'
@@ -51,9 +51,9 @@ const SideDrawer = () => {
         </MenuButton>
         <MenuList>
           <ProfileCard user={user} >
-          <MenuItem>
-            PROFILE
-          </MenuItem>
+            <MenuItem>
+              PROFILE
+            </MenuItem>
           </ProfileCard>
           <MenuDivider />
           <MenuItem>LOGOUT</MenuItem>
