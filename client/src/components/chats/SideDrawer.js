@@ -8,14 +8,22 @@ import { FaRegBell } from "react-icons/fa";
 import { Menu, MenuButton, MenuList, MenuItem, Tooltip } from '@chakra-ui/react';
 import { TbSquareRoundedChevronDown } from "react-icons/tb";
 import ProfileCard from './ProfileCard';
+import { useNavigate } from 'react-router-dom';
 
 const SideDrawer = () => {
   const [search, setSearch] = useState('');
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
+  const navigate = useNavigate();
 
-  const { user } = ChatState(); // Assign the return value of ChatState to the user variable
+  const { user } = ChatState();
+  const logOutHandler = () => {
+    localStorage.removeItem('userCredentials');
+    window.location.reload();
+    navigate('/');
+
+  }
 
   return (
     <Box
@@ -56,7 +64,9 @@ const SideDrawer = () => {
             </MenuItem>
           </ProfileCard>
           <MenuDivider />
-          <MenuItem>LOGOUT</MenuItem>
+          <MenuItem
+            onClick={logOutHandler}
+          >LOGOUT</MenuItem>
         </MenuList>
       </Menu>
     </Box >

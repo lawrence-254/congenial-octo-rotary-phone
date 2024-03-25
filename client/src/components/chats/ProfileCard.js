@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, IconButton, Text, useDisclosure } from '@chakra-ui/react'
+import { Button, IconButton, Text, useDisclosure, Avatar } from '@chakra-ui/react'
 import { GrView } from "react-icons/gr";
 import {
     Modal,
@@ -41,10 +41,19 @@ const ProfileCard = ({ user, children }) => {
             <Modal isCentered isOpen={isOpen} onClose={onClose}>
                 {overlay}
                 <ModalContent>
-                    <ModalHeader>Modal Title</ModalHeader>
+                    <ModalHeader
+                        fontSize='40x'
+                        d='flex'
+                        justifyContent='center'
+                    >{user.name}</ModalHeader>
                     <ModalCloseButton />
-                    <ModalBody>
-                        <Text>Custom backdrop filters!</Text>
+                    <ModalBody
+                        d='flex'
+                        flexDirection='column'
+                        justifyContent='space-between'
+                    >
+                        <Avatar size='2xl' cursor='pointer' name={user.name} src={user.picture} />
+                        <Text>{user.email}</Text>
                     </ModalBody>
                     <ModalFooter>
                         <Button onClick={onClose}>Close</Button>
