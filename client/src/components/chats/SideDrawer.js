@@ -3,22 +3,22 @@ import { ChatState } from '../../context/ChatProvider';
 import { Box } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { FcSearch } from "react-icons/fc";
-import { Avatar, MenuDivider, Text, Input } from '@chakra-ui/react'; 
+import { Avatar, MenuDivider, Text, Input } from '@chakra-ui/react';
 import { FaRegBell } from "react-icons/fa";
 import { Menu, MenuButton, MenuList, MenuItem, Tooltip } from '@chakra-ui/react';
 import { TbSquareRoundedChevronDown } from "react-icons/tb";
 import ProfileCard from './ProfileCard';
 import { useNavigate } from 'react-router-dom';
 import {
+  useToast,
   Drawer,
   DrawerBody,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
-  useDisclosure,
-} from '@chakra-ui/react'
+  useDisclosure
+} from '@chakra-ui/react';
 
 const SideDrawer = () => {
   const [search, setSearch] = useState('');
@@ -28,14 +28,27 @@ const SideDrawer = () => {
   const navigate = useNavigate();
   //drawer
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const btnRef = React.useRef()
-
+  const tb = useToast();
   const { user } = ChatState();
   const logOutHandler = () => {
     localStorage.removeItem('userCredentials');
     window.location.reload();
     navigate('/');
 
+  }
+
+  const searchHandler = () => {
+    const toast = useToast();
+    if (!search) {
+      toast({
+        title: 'Empty field.',
+        description: "please enter something before you submit.",
+        status: 'warning',
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+    return;
   }
 
   return (
@@ -95,21 +108,23 @@ const SideDrawer = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Create your account</DrawerHeader>
+          <DrawerHeader borderBottomWidth='2px'>Search user</DrawerHeader>
 
           <DrawerBody>
-            <Input placeholder='Type here...' />
-            <Button ref={btnRef} colorScheme='teal' onClick={onOpen}>
-              Search
-            </Button>
+            <Box d='flex' justifyContent='center' pb={2} alignItems='center' flexDirection='column'>
+              <Input placeholder='Search here...'
+                mr={2}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <Button ref={btnRef} colorScheme='teal' onClick={searchHandler}>
+                <FcSearch />
+              </Button>
+            </Box>
+
           </DrawerBody>
 
-          <DrawerFooter>
-            <Button variant='outline' mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme='blue'>Save</Button>
-          </DrawerFooter>
+
         </DrawerContent>
       </Drawer>
     </>
