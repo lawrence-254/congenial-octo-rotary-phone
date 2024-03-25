@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 // import axios from 'axios';
 import { ChatState } from '../context/ChatProvider';
-// import LeftDrawer from '../components/chats/LeftDrawer';
 import { Box } from '@chakra-ui/react'
 import ChatList from '../components/chats/ChatList';
 import ChatArea from '../components/chats/ChatArea';
@@ -22,7 +21,7 @@ function ChatPage() {
     }, [user]);
 
     return (
-        <div style={{ width: '100vw' }}>
+        <div style={{ width: '100%' }}>
             {user && <SideDrawer />}
             <Box
                 display='flex'
