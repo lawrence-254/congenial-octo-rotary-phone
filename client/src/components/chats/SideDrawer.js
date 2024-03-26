@@ -3,7 +3,7 @@ import { ChatState } from '../../context/ChatProvider';
 import { Box } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { FcSearch } from "react-icons/fc";
-import { Avatar, MenuDivider, Text, Input } from '@chakra-ui/react';
+import { Avatar, MenuDivider, Text, Input, Spinner } from '@chakra-ui/react';
 import { FaRegBell } from "react-icons/fa";
 import { Menu, MenuButton, MenuList, MenuItem, Tooltip, Skeleton, Stack } from '@chakra-ui/react';
 import { TbSquareRoundedChevronDown } from "react-icons/tb";
@@ -32,7 +32,7 @@ const SideDrawer = () => {
   const [isLoaded, setIsLoaded] = React.useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast();
-  const { user, setSelectedChat, chat, setChat } = ChatState();
+  const { user, selectedChat, setSelectedChat, chat, setChat } = ChatState();
   const logOutHandler = () => {
     localStorage.removeItem('userCredentials');
     window.location.reload();
@@ -81,7 +81,7 @@ const SideDrawer = () => {
 
   const opnChat = async (userId) => {
     try {
-      setLoading(true);
+      setLoadingChat(true);
       const config = {
         headers: {
           'Content-Type': 'application/json',
@@ -90,8 +90,12 @@ const SideDrawer = () => {
       };
 
       const { data } = await axios.post("/api/chat", { userId }, config);
+
+      if (!chat.find((c) => c._id === data._id)) {
+        setChat([...chat, data]);
+      };
       setSelectedChat(data);
-      setLoading(false);
+      setLoadingChat(false);
       onClose();
 
     } catch (error) {
@@ -105,7 +109,7 @@ const SideDrawer = () => {
         position: 'bottom-left'
       });
       console.log(error);
-      setLoading(false);
+      setLoadingChat(false);
 
     }
   }
@@ -252,8 +256,7 @@ const SideDrawer = () => {
                 </Box>
               ))
             )}
-
-
+            {loadingChat && <Spinner d='flex' ml='auto' color='teal' />}
           </DrawerBody>
 
 
