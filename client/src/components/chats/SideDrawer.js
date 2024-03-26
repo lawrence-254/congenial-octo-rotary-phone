@@ -5,7 +5,7 @@ import { Button } from '@chakra-ui/button';
 import { FcSearch } from "react-icons/fc";
 import { Avatar, MenuDivider, Text, Input } from '@chakra-ui/react';
 import { FaRegBell } from "react-icons/fa";
-import { Menu, MenuButton, MenuList, MenuItem, Tooltip } from '@chakra-ui/react';
+import { Menu, MenuButton, MenuList, MenuItem, Tooltip, Skeleton, Stack } from '@chakra-ui/react';
 import { TbSquareRoundedChevronDown } from "react-icons/tb";
 import ProfileCard from './ProfileCard';
 import { useNavigate } from 'react-router-dom';
@@ -29,9 +29,10 @@ const SideDrawer = () => {
   const [loadingChat, setLoadingChat] = useState(false);
   const navigate = useNavigate();
   //drawer
+  const [isLoaded, setIsLoaded] = React.useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast();
-  const { user } = ChatState();
+  const { user, setSelectedChat, chat, setChat } = ChatState();
   const logOutHandler = () => {
     localStorage.removeItem('userCredentials');
     window.location.reload();
@@ -54,20 +55,20 @@ const SideDrawer = () => {
     }
     try {
       setLoading(true);
-      // search for user
       const config = {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${user.token}`
         }
       };
-      const { data } = await axios.get(`/api/user/search?name=${search}`, config);
+      const { data } = await axios.get(`/api/user?search=${search}`, config);
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
+
       toast({
         title: 'Error.',
-        description: "Failed to load search result.",
+        description: error.message,
         status: 'error',
         duration: 9000,
         isClosable: true,
@@ -75,6 +76,37 @@ const SideDrawer = () => {
       });
       console.log(error);
       setLoading(false);
+    }
+  }
+
+  const opnChat = async (userId) => {
+    try {
+      setLoading(true);
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`
+        }
+      };
+
+      const { data } = await axios.post("/api/chat", { userId }, config);
+      setSelectedChat(data);
+      setLoading(false);
+      onClose();
+
+    } catch (error) {
+
+      toast({
+        title: 'Error.',
+        description: error.message,
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+        position: 'bottom-left'
+      });
+      console.log(error);
+      setLoading(false);
+
     }
   }
 
@@ -149,7 +181,50 @@ const SideDrawer = () => {
               </Button>
             </Box>
             {loading ? (
-              <Text>Loading...</Text>
+              <Stack padding={4} spacing={1}>
+                <Skeleton height='40px' isLoaded={isLoaded}>
+                  <Text>Loading ...</Text>
+                </Skeleton>
+                <Skeleton
+                  height='40px'
+                  isLoaded={isLoaded}
+                  bg='green.500'
+                  color='white'
+                  fadeDuration={1}
+                >
+                  <Text>Loading ...</Text>
+                </Skeleton>
+                <Skeleton
+                  height='40px'
+                  isLoaded={isLoaded}
+                  fadeDuration={8}
+                  bg='blue.500'
+                  color='white'
+                >
+                  <Text>Loading ...</Text>
+                </Skeleton>
+                <Skeleton height='40px' isLoaded={isLoaded}>
+                  <Text>Loading ...</Text>
+                </Skeleton>
+                <Skeleton
+                  height='40px'
+                  isLoaded={isLoaded}
+                  bg='green.500'
+                  color='white'
+                  fadeDuration={1}
+                >
+                  <Text>Loading ...</Text>
+                </Skeleton>
+                <Skeleton
+                  height='40px'
+                  isLoaded={isLoaded}
+                  fadeDuration={8}
+                  bg='blue.500'
+                  color='white'
+                >
+                  <Text>Loading ...</Text>
+                </Skeleton>
+              </Stack>
             ) : searchResult.length === 0 ? (
               <Text>No user found.</Text>
             ) : (
@@ -165,13 +240,11 @@ const SideDrawer = () => {
                 >
                   <Avatar size='sm' name={user.name} src={user.picture} />
                   <Text>{user.name}</Text>
+                  <Text>{user.email}</Text>
                   <Button
                     colorScheme='teal'
                     size='sm'
-                    onClick={() => {
-                      // create chat
-                      console.log('Create chat with:', user);
-                    }}
+                    onClick={() => opnChat(user._id)}
                     isLoading={loadingChat}
                   >
                     Chat
