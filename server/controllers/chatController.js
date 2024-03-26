@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const Chat = require('../models/chatModel');
+const User = require('../models/userModel');
 
 const getChats = asyncHandler(async (req, res) => {
     const { userId } = req.body;
@@ -21,7 +22,7 @@ const getChats = asyncHandler(async (req, res) => {
             select: '-password'
         });
         if (singleChats.length > 0) {
-            res.json(singleChats);
+            res.send(singleChats[0]);
         } else {
             var chatDetails = {
                 chatTitle: 'sender',
@@ -32,9 +33,9 @@ const getChats = asyncHandler(async (req, res) => {
             try {
                 const newChat = await Chat.create(chatDetails);
 
-                const fullChat = await Chat.findOne({ _id: newChat._id }).populate('chatParticipants', '-password').populate('latestMessage');
-                res.send(newChat);
-                res.status(201).send(fullChat);
+                const FullChat = await Chat.findOne({ _id: newChat._id }).populate('chatParticipants', '-password').populate('latestMessage');
+
+                res.status(201).send(FullChat);
             } catch (error) {
                 console.error('Error creating chat:', error);
                 res.status(500).json({ message: 'Failed to create chat.' });
