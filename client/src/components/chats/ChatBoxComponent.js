@@ -2,6 +2,8 @@ import React from 'react'
 import { ChatState } from '../../context/ChatProvider';
 import { Box, IconButton, Text } from '@chakra-ui/react'
 import { AiOutlineArrowLeft, AiOutlineUsergroupAdd, } from "react-icons/ai";
+import { getSender, getFullSender } from '../../config/chatFunctions';
+import ProfileCard from './ProfileCard';
 
 
 const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
@@ -15,8 +17,13 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
                         icon={<AiOutlineArrowLeft />}
                         // icon={<AiOutlineUsergroupAdd />}
                         aria-label=''
-                        onClick={() => setSelectedChat(selectedChat)}
+                        onClick={() => setSelectedChat("")}
                     />
+                    // eslint-disable-next-line
+                    {!selectedChat.chatTypeGroup ? (<>
+                        {getSender(user, selectedChat.user)}
+                        <ProfileCard user={getFullSender(user, selectedChat.user)} />
+                    </>) : (selectedChat.chatTitle.uppercase())}
                 </Text>
                 <Box
                     w='100%'
