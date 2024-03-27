@@ -14,6 +14,8 @@ const theme = extendTheme({
             800: "#252300",
             900: "#000000"
         },
+        tiffanyBlue: '#0ABAB5',
+
     },
 });
 

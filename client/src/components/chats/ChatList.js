@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ChatState } from '../../context/ChatProvider';
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { getSender } from '../../config/chatFunctions';
+import GroupChatModel from '../../utils/GroupChatModel';
 import {
   Text,
   Box,
@@ -16,7 +17,6 @@ import axios from 'axios';
 
 const ChatList = () => {
   const [loggedUser, setLoggedUser] = useState();
-
   const toast = useToast();
   const { user, selectedChat, setSelectedChat, chat, setChat } = ChatState();
 
@@ -31,8 +31,7 @@ const ChatList = () => {
       const { data } = await axios.get(`/api/chat`, config);
       console.log(data);
       setChat(data);
-    }
-    catch (error) {
+    } catch (error) {
       toast({
         title: 'Error.',
         description: error.message,
@@ -44,17 +43,17 @@ const ChatList = () => {
       console.log(error);
     }
   };
+
   useEffect(() => {
     const storedUserCredentials = localStorage.getItem('userCredentials');
-
     if (storedUserCredentials) {
       setLoggedUser(JSON.parse(storedUserCredentials));
-
       fetchChats();
     } else {
       console.log('User credentials not found in local storage.');
     }
   }, []);
+
 
 
   return (
@@ -80,11 +79,13 @@ const ChatList = () => {
 
       >
         Chats
-        <Button
-          d='flex'
-          fontSize={{ base: "17px", md: "10px", }}
-          rightIcon={<AiOutlineUsergroupAdd />}
-        >New Group</Button>
+        <GroupChatModel>
+          <Button
+            d='flex'
+            fontSize={{ base: "17px", md: "10px", }}
+            rightIcon={<AiOutlineUsergroupAdd />}
+          >New Group</Button>
+        </GroupChatModel>
       </Box>
       <Box
         d='flex'
@@ -103,8 +104,6 @@ const ChatList = () => {
               <Text>{!c.chatTypeGroup ? (
                 getSender(loggedUser, c.chatParticipants.name)
               ) : c.name}</Text>
-
-              {/* Content of each Box */}
             </Box>
           ))}
         </Stack>
