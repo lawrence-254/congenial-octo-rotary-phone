@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
 import { ChatState } from '../context/ChatProvider';
 import { Box } from '@chakra-ui/react'
@@ -8,6 +8,7 @@ import SideDrawer from '../components/chats/SideDrawer';
 
 function ChatPage() {
     const { user } = ChatState();
+    const [reloadChats, setReloadChats] = useState(false);
 
 
     useEffect(() => {
@@ -32,8 +33,8 @@ function ChatPage() {
             >
                 {user && (
                     <>
-                        <ChatList flexBasis='20%' />
-                        <ChatArea flexBasis='80%' />
+                        <ChatList flexBasis='20%' reloadChats={reloadChats} setReloadChats={setReloadChats} />
+                        <ChatArea flexBasis='80%' reloadChats={reloadChats} setReloadChats={setReloadChats} />
                     </>
                 )}
             </Box>

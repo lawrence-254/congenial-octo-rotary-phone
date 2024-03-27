@@ -15,7 +15,7 @@ import {
 import axios from 'axios';
 
 
-const ChatList = () => {
+const ChatList = ({ reloadChats }) => {
   const [loggedUser, setLoggedUser] = useState();
   const toast = useToast();
   const { user, selectedChat, setSelectedChat, chat, setChat } = ChatState();
@@ -52,7 +52,7 @@ const ChatList = () => {
     } else {
       console.log('User credentials not found in local storage.');
     }
-  }, []);
+  }, [reloadChats]);
 
 
 
