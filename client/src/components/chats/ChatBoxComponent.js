@@ -7,6 +7,7 @@ import ProfileCard from './ProfileCard';
 import updateChatModalForGroup from './updateChatModalForGroup'
 
 
+
 const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
     const { user, selectedChat, setSelectedChat, chat, setChat } = ChatState();
     return (
