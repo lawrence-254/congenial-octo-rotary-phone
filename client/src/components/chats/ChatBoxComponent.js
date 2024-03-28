@@ -4,7 +4,7 @@ import { Box, IconButton, Text } from '@chakra-ui/react'
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { getSender, getFullSender } from '../../config/chatFunctions';
 import ProfileCard from './ProfileCard';
-import updateChatModalForGroup from './updateChatModalForGroup'
+import UpdateChatModalForGroup from './UpdateChatModalForGroup'
 
 
 
@@ -25,7 +25,7 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
                         {getSender(user, selectedChat.user)}
                         <ProfileCard user={getFullSender(user, selectedChat.user)} />
                     </>) : (selectedChat.chatTitle.uppercase())} */}
-                    <updateChatModalForGroup />
+                    <UpdateChatModalForGroup />
 
                 </Text>
                 <Box

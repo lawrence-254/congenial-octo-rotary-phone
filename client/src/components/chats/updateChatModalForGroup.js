@@ -7,7 +7,7 @@ import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalClo
 import UserListItem from '../userUtils/UserListItem';
 import axios from 'axios';
 
-const updateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
+const UpdateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { user, selectedChat, setSelectedChat, chat, setChat } = ChatState();
     const [groupChatName, setGroupChatName] = useState('');
@@ -79,4 +79,4 @@ const updateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
     )
 }
 
-export default updateChatModalForGroup
+export default UpdateChatModalForGroup
