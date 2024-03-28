@@ -3,8 +3,9 @@ import React, { useState } from 'react'
 import { AiOutlineFundView } from "react-icons/ai";
 import { ChatState } from '../../context/ChatProvider';
 import { useState } from 'react'
-import UserBadge from '../userUtils/UserBadge'
-
+import UserBadge from '../userUtils/UserBadge';
+import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, FormControl, Input, Spinner, Box, useToast } from '@chakra-ui/react';
+import UserListItem from '../userUtils/UserListItem';
 
 const updateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -35,7 +36,9 @@ const updateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
             setRenameLoading(false);
         } catch (error) {
             toast({ title: 'Error', description: error.message, status: 'error', duration: 3000, isClosable: true });
+            setRenameLoading(false);
         }
+        setGroupChatName("")
     };
     const handleSearch = () => { };
 
@@ -57,6 +60,11 @@ const updateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
                         <FormControl>
                             <Input placeholder='Add Group Participants' mb={3} onChange={(e) => handleSearch(e.target.value)} />
                         </FormControl>
+                        {loading ? <Spinner colorScheme='teal' /> : (
+                            searchResults?.map((u) => (
+                                <UserListItem key={u._id} user={u} handleFunction={() => handleAddUser(u)} colorScheme='tiffanyBlue' />
+                            ))
+                        )}
                     </ModalBody>
                     <ModalFooter>
                         <Button colorScheme='red' mr={3} onClick={() => handleRemoveUser(user)}>
