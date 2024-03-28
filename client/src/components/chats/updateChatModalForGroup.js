@@ -17,7 +17,7 @@ const UpdateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
     const [renameLoading, setRenameLoading] = useState(false);
     const toast = useToast();
 
-    const handleRemoveUser = () => {
+    const handleRemoveUser = async() => {
         try {
             setLoading(true);
             const config = {
