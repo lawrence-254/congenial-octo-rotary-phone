@@ -17,7 +17,27 @@ const UpdateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
     const [renameLoading, setRenameLoading] = useState(false);
     const toast = useToast();
 
-    const handleRemoveUser = () => { };
+    const handleRemoveUser = () => {
+        try {
+            setLoading(true);
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${user.token}`
+                }
+            };
+
+            const { data } = axios.put('/api/chat/groupRemove', { chatId: selectedChat._id, userId: user._id }, config);
+
+            setSelectedChat(data);
+            setReloadChats(!reloadChats);
+            setLoading(false);
+        }
+        catch (error) {
+            toast({ title: 'Error', description: error.message, status: 'error', duration: 3000, isClosable: true });
+            setLoading(false);
+        }
+    };
     const handleRename = async () => {
         if (!groupChatName) return;
         try {
@@ -42,7 +62,26 @@ const UpdateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
     };
     const handleSearch = () => { };
 
-    const handleAddUser = () => { };
+    const handleAddUser = async () => {
+        try {
+            setLoading(true);
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${user.token}`
+                }
+            };
+
+            const { data } = await axios.put('/api/chat/groupAdd', { chatId: selectedChat._id, userId: user._id }, config);
+
+            setSelectedChat(data);
+            setReloadChats(!reloadChats);
+            setLoading(false);
+        } catch (error) {
+            toast({ title: 'Error', description: error.message, status: 'error', duration: 3000, isClosable: true });
+            setLoading(false);
+        }
+    };
 
     return (
         <>
