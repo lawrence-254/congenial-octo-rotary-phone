@@ -17,7 +17,7 @@ const UpdateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
     const [renameLoading, setRenameLoading] = useState(false);
     const toast = useToast();
 
-    const handleRemoveUser = async() => {
+    const handleRemoveUser = async (user) => {
         try {
             setLoading(true);
             const config = {
@@ -33,6 +33,22 @@ const UpdateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
             setReloadChats(!reloadChats);
             setLoading(false);
         }
+
+        // try {
+        //     setLoading(true);
+        //     const config = {
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             Authorization: `Bearer ${user.token}`
+        //         }
+        //     };
+
+        //     const { data } = axios.put('/api/chat/groupRemove', { chatId: selectedChat._id, userId: user._id }, config);
+
+        //     setSelectedChat(data);
+        //     setReloadChats(!reloadChats);
+        //     setLoading(false);
+        // }
         catch (error) {
             toast({ title: 'Error', description: error.message, status: 'error', duration: 3000, isClosable: true });
             setLoading(false);
@@ -62,7 +78,7 @@ const UpdateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
     };
     const handleSearch = () => { };
 
-    const handleAddUser = async () => {
+    const handleAddUser = async (user) => {
         try {
             setLoading(true);
             const config = {

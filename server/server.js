@@ -22,7 +22,8 @@ app.get('/', (req, res) => {
 app.use('/api/user', userRoutes);
 // chat route
 app.use('/api/chat', require('./routes/chatRoutes'));
-
+//message routes
+app.use('/api/message', require('./routes/messageRoutes'));
 // Middleware to handle 404 Not Found errors
 app.use(notFound);
 
