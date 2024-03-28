@@ -17,9 +17,12 @@ This project aims to create a chat application using the MERN (MongoDB, Express.
 ## Installation
 To run this project locally, follow these steps:
 1. Clone the repository: `git clone https://github.com/lawrence-254/CONGENIAL-OCTO-ROTARY-PHONE.git`
-2. Navigate to the project directory: `cd repo`
+2. Navigate to the project directory: `cd CONGENIAL-OCTO-ROTARY-PHONE.git`
 3. Install the dependencies: `npm install`
-4. Start the development server: `npm start`
+4. Navigate to the server project directory: `cd server`
+5. Start the development server: `npm start`
+6. Navigate to the project client directory: `cd client`
+7. Start the development server: `npm start`
 
 ## Usage
 Once the project is up and running, users can access the chat application through their web browsers. They can create an account, log in, and start chatting with other users in real-time.
