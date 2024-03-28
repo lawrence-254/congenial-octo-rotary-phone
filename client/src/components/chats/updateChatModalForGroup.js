@@ -2,10 +2,10 @@ import { IconButton } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { AiOutlineFundView } from "react-icons/ai";
 import { ChatState } from '../../context/ChatProvider';
-import { useState } from 'react'
 import UserBadge from '../userUtils/UserBadge';
 import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, FormControl, Input, Spinner, Box, useToast } from '@chakra-ui/react';
 import UserListItem from '../userUtils/UserListItem';
+import axios from 'axios';
 
 const updateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -32,7 +32,7 @@ const updateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
             const { data } = await axios.put('/api/chat/rename', { chatId: selectedChat._id, chatTitle: groupChatName }, config);
 
             setSelectedChat(data);
-            setFetchAgain(!fetchAgain);
+            setReloadChats(!reloadChats);
             setRenameLoading(false);
         } catch (error) {
             toast({ title: 'Error', description: error.message, status: 'error', duration: 3000, isClosable: true });
@@ -41,6 +41,8 @@ const updateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
         setGroupChatName("")
     };
     const handleSearch = () => { };
+
+    const handleAddUser = () => { };
 
     return (
         <>
