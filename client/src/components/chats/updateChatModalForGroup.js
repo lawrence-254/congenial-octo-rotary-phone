@@ -18,6 +18,7 @@ const updateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
 
     const handleRemoveUser = () => { };
     const handleRename = async () => {
+        if (!groupChatName) return;
         try {
             setRenameLoading(true);
             const config = {
@@ -27,9 +28,13 @@ const updateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
                 }
             };
 
-            const { data } = await axios.put('/api/chat/rename', config);
+            const { data } = await axios.put('/api/chat/rename', { chatId: selectedChat._id, chatTitle: groupChatName }, config);
+
+            setSelectedChat(data);
+            setFetchAgain(!fetchAgain);
+            setRenameLoading(false);
         } catch (error) {
-            
+            toast({ title: 'Error', description: error.message, status: 'error', duration: 3000, isClosable: true });
         }
     };
     const handleSearch = () => { };
