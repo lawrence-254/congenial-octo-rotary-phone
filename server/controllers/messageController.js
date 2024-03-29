@@ -19,11 +19,24 @@ const sendMessage = expressAsyncHandler(async (req, res) => {
         content: content
     };
 
-    try { }
+    try {
+        var message = await Message.create(newMessage);
+
+        message = await message.populate("sender", "name email picture");
+        message = await message.populate("chat");
+        message = await User.populate(message, { path: "chat.users", select: "name email picture" });
+
+        await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message })
+        res.status(201).json(message);
+    }
     catch (error) {
         res.status(500);
-        throw new Error("Error sending message");
+        throw new Error(error.message);
     }
 });
 
-module.exports = { sendMessage };
+const getAllChatMessages = asyncHandler(async (req, res) => {
+
+}
+);
+module.exports = { sendMessage, getAllChatMessages };
