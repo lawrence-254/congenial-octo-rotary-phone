@@ -20,7 +20,7 @@ function HomePage() {
         // height="100vh"
         >
             <Box backgroundColor='teal' fontFamily='Style Script' fontWeight='400' borderRadius='md' width='50vw' p={4} m={4} fontSize="xl">
-                <Text fontSize="50px" textAlign="center" align="center">Twitter</Text>
+                <Text fontSize="50px" textAlign="center" align="center">WITTER</Text>
             </Box>
             <Box borderRadius='md' m={4}>
                 <Text></Text>

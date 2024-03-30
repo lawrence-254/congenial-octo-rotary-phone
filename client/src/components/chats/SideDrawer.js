@@ -132,7 +132,7 @@ const SideDrawer = () => {
           </Button>
         </Tooltip>
 
-        <Text fontFamily='Style Script' color='teal' fontSize='4xl'>Twitter</Text>
+        <Text fontFamily='Style Script' color='teal' fontSize='4xl'>WITTER</Text>
 
         <Menu>
           <MenuButton>

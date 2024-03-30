@@ -108,8 +108,19 @@ const UpdateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
                     <ModalHeader color='tiffanyBlue'>Edit</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody d='flex' flexDir='column' alignItems='center'>
-                        <Box>{selectedChat.users.map((u) => (<UserBadge key={u._id} user={u} handleFunction={() => handleRemoveUser(u)} colorScheme='tiffanyBlue' />
-                        ))}</Box>
+                        {selectedChat && selectedChat.chatParticipants && (
+                            <Box>
+                                {selectedChat.chatParticipants.map((u) => (
+                                    <UserBadge
+                                        key={u._id}
+                                        user={u}
+                                        handleFunction={() => handleRemoveUser(u)}
+                                        colorScheme='tiffanyBlue'
+                                    />
+                                ))}
+                            </Box>
+                        )}
+
                         <FormControl>
                             <Input placeholder='Group Title' mb={3} value={groupChatName} onChange={(e) => setGroupChatName(e.target.value)} />
                             <Button onClick={handleRename} isLoading={renameLoading}>update</Button>

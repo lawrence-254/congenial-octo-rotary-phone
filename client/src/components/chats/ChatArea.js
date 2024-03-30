@@ -17,7 +17,9 @@ const ChatArea = ({ reloadChats, setReloadChats }) => {
             p={3}
             borderRadius='1g'
             borderWidth='1px'
-        ><ChatBoxComponent reloadChats={reloadChats} setReloadChats={setReloadChats} /></Box>
+        >
+            <ChatBoxComponent reloadChats={reloadChats} setReloadChats={setReloadChats} />
+        </Box>
     )
 }
 

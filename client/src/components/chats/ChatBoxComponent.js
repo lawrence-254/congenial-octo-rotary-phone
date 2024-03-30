@@ -4,7 +4,7 @@ import { Box, IconButton, Text } from '@chakra-ui/react'
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { getSender, getFullSender } from '../../config/chatFunctions';
 import ProfileCard from './ProfileCard';
-import UpdateChatModalForGroup from './UpdateChatModalForGroup'
+import UpdateChatModalForGroup from './UpdateChatModalForGroup';
 
 
 
