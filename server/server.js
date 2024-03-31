@@ -33,4 +33,22 @@ app.use(errorHandler);
 // Define port to run server
 const PORT = process.env.PORT;
 // Start the server
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const server = app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const io = require('socket.io')(server, {
+    pingTimeout: 60000,
+    cors: {
+        origin: "https//localhost:3000",
+    }
+});
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+    socket.on('chat message', (msg) => {
+        console.log('message: ' + msg);
+        io.emit('chat message', msg);
+    });
+}
+);
