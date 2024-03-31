@@ -7,8 +7,11 @@ import ProfileCard from './ProfileCard';
 import UpdateChatModalForGroup from './UpdateChatModalForGroup';
 import axios from 'axios';
 import ChatBubbles from './ChatBubbles';
+import io from 'socket.io-client';
 
-
+// socket io endpoint
+const ENDPOINT = 'http://localhost:5000';
+var socket, selectedChatCompare;
 
 const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
     const [message, setMessage] = useState([]);
@@ -61,6 +64,24 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
     useEffect(() => {
         fetchAllMessages();
     }, [selectedChat, reloadChats]);
+
+
+    useEffect(() => {
+        // const socket = io('http://localhost:5000');
+        // socket.on('connect', () => {
+        //     console.log('connected');
+        // });
+        // socket.on('disconnect', () => {
+        //     console.log('disconnected');
+        // });
+        // socket.on('chat message', (msg) => {
+        //     console.log('message: ' + msg);
+        //     setMessage([...message, msg]);
+        // });
+        // return () => {
+        //     socket.disconnect();
+        // }
+    }, [message]);
     const sendMessage = async (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -146,7 +167,7 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
                         <div style={styles.message}>
 
                             <ChatBubbles message={message} />
-                    
+
                         </div>
                     )}
                     <FormControl onKeyDown={sendMessage} isRequired mt={3}>
