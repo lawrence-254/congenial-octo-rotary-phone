@@ -6,14 +6,14 @@ const ChatBubbles = ({ message }) => {
     return (
         <ScrollableFeed>{message && message.map((msg, i) => (
             <Box
-                key={m._id}
+                key={msg._id}
                 p={2}
                 mb={2}
                 borderRadius='1g'
                 borderWidth='1px'
                 borderColor='gray.200'
             >
-                <Text fontSize='lg' fontWeight='bold'>{getSender(user, msg.sender).username}</Text>
+                {/* <Text fontSize='lg' fontWeight='bold'>{getSender(user, msg.sender).username}</Text> */}
                 <Text fontSize='lg'>{msg.message}</Text>
             </Box>
         ))}</ScrollableFeed>
