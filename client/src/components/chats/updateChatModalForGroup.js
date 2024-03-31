@@ -7,7 +7,7 @@ import { useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalClo
 import UserListItem from '../userUtils/UserListItem';
 import axios from 'axios';
 
-const UpdateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
+const UpdateChatModalForGroup = ({ reloadChats, setReloadChats, fetchAllMessages }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { user, selectedChat, setSelectedChat, chat, setChat } = ChatState();
     const [groupChatName, setGroupChatName] = useState('');
@@ -31,6 +31,7 @@ const UpdateChatModalForGroup = ({ reloadChats, setReloadChats }) => {
 
             setSelectedChat(data);
             setReloadChats(!reloadChats);
+            fetchAllMessages();
             setLoading(false);
         }
 
