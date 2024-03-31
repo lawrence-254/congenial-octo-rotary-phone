@@ -20,7 +20,7 @@ const ChatList = ({ reloadChats }) => {
   const toast = useToast();
   const { user, selectedChat, setSelectedChat, chat, setChat } = ChatState();
 
-  const fetchChats = async () => {
+  const fetchChats = async (user) => {
     try {
       const config = {
         headers: {
@@ -40,7 +40,7 @@ const ChatList = ({ reloadChats }) => {
         isClosable: true,
         position: 'bottom-left'
       });
-      console.log(error);
+      console.log(error.message);
     }
   };
 
@@ -48,7 +48,7 @@ const ChatList = ({ reloadChats }) => {
     const storedUserCredentials = localStorage.getItem('userCredentials');
     if (storedUserCredentials) {
       setLoggedUser(JSON.parse(storedUserCredentials));
-      fetchChats();
+      fetchChats(user);
     } else {
       console.log('User credentials not found in local storage.');
     }
@@ -94,7 +94,7 @@ const ChatList = ({ reloadChats }) => {
         h='100%'
         overflowY='auto'>{chat ? (<Stack>
           {chat.map(c => (
-            <Box key={c.id}
+            <Box key={c._id}
               onClick={() => setSelectedChat(c)}
               bg={selectedChat ? 'teal' : 'grey'}
               color={selectedChat ? 'black' : 'teal'}

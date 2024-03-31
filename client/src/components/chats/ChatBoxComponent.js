@@ -12,7 +12,7 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
     const { user, selectedChat, setSelectedChat, chat, setChat } = ChatState();
     return (
         <>
-            {!selectedChat ? (<>
+            {selectedChat ? (<>
                 <Text fontSize='2xl' fontWeight='bold' mb={2}>title
                     <IconButton
                         ml={2}
@@ -21,10 +21,15 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
                         aria-label=''
                         onClick={() => setSelectedChat("")}
                     />
-                    {/* {!selectedChat.chatTypeGroup ? (<>
-                        {getSender(user, selectedChat.user)}
-                        <ProfileCard user={getFullSender(user, selectedChat.user)} />
-                    </>) : (selectedChat.chatTitle.uppercase())} */}
+                    {!selectedChat.chatTypeGroup ? (
+                        <>
+                            {getSender(user, selectedChat.chatParticipants)}
+                            <ProfileCard user={getFullSender(user, selectedChat.chatParticipants)} />
+                        </>
+                    ) : (
+                        <>{selectedChat.chatTitle.toUpperCase()}</>
+                    )}
+
                     <UpdateChatModalForGroup />
 
                 </Text>
