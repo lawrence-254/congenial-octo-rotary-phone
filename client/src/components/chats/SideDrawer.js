@@ -10,6 +10,10 @@ import { TbSquareRoundedChevronDown } from "react-icons/tb";
 import ProfileCard from './ProfileCard';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { getSender } from '../../config/chatFunctions';
+
+
+
 
 import {
   useToast,
@@ -32,7 +36,7 @@ const SideDrawer = () => {
   const [isLoaded, setIsLoaded] = React.useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast();
-  const { user, selectedChat, setSelectedChat, chat, setChat } = ChatState();
+  const { user, selectedChat, setSelectedChat, chat, setChat, notification, setNotification } = ChatState();
   const logOutHandler = () => {
     localStorage.removeItem('userCredentials');
     window.location.reload();
@@ -138,8 +142,20 @@ const SideDrawer = () => {
           <MenuButton>
             <FaRegBell fontSize='8xl' m={1} color='teal' fontFamily='Style Script' />
           </MenuButton>
+
+          // ...
+
           <MenuList>
             <MenuItem>
+              {notification.length === 0 ? 'No new notifications' : 'You have ' + notification.length + ' new notifications'}
+              {notification.map((n) => (
+                <MenuItem key={n._id} onClick={() => {
+                  setSelectedChat(n.chat)
+                  setNotification(notification.filter((not) => not._id !== n._id))
+                }}>
+                  {n.chat.chatTypeGroup ? 'New group chat' + n.chat.chatTitle : `New message from ${getSender(n.chat.chatParticipants, n.sender)}`}
+                </MenuItem>
+              ))}
             </MenuItem>
           </MenuList>
         </Menu>

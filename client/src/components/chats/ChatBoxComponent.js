@@ -17,7 +17,7 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
     const [message, setMessage] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [loading, setLoading] = useState(false);
-    const { user, selectedChat, setSelectedChat, chat, setChat } = ChatState();
+    const { user, selectedChat, setSelectedChat, notification, setNotification } = ChatState();
     const [typing, setTyping] = useState(false);
     const [isTyping, setIsTyping] = useState(false);
     // const toast = Toast();
@@ -82,6 +82,11 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
         socket.on('message received', (newMessage) => {
             if (selectedChatCompare && selectedChatCompare._id === newMessage.chatId) {
                 setMessage([...message, newMessage]);
+            }
+            if (!selectedChatCompare || selectedChatCompare._id !== newMessage.chatId) {
+                if (notification.includes(newMessage)) return;
+                setNotification([...notification, newMessage]);
+                setReloadChats(!reloadChats);
             }
         });
     });
