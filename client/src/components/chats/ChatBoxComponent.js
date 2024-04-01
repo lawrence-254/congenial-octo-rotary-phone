@@ -7,7 +7,7 @@ import ProfileCard from './ProfileCard';
 import UpdateChatModalForGroup from './UpdateChatModalForGroup';
 import axios from 'axios';
 import ChatBubbles from './ChatBubbles';
-import io from 'socket.io-client';
+import io, { io } from 'socket.io-client';
 
 // socket io endpoint
 const ENDPOINT = 'http://localhost:5000';
@@ -67,6 +67,7 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
 
 
     useEffect(() => {
+        const io = io(ENDPOINT);
         // const socket = io('http://localhost:5000');
         // socket.on('connect', () => {
         //     console.log('connected');
