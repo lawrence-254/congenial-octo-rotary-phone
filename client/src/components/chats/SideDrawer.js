@@ -11,7 +11,7 @@ import ProfileCard from './ProfileCard';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { getSender } from '../../config/chatFunctions';
-
+import NotificationBadge, { Effect } from 'react-notification-badge';
 
 
 
@@ -140,6 +140,15 @@ const SideDrawer = () => {
 
         <Menu>
           <MenuButton>
+            <NotificationBadge
+              count={notification.length}
+              size="8xl"
+              style={{ margin: '1em' }}
+              color='teal'
+              fontFamily='Style Script'
+              effect={Effect.SCALE}
+            />
+
             <FaRegBell fontSize='8xl' m={1} color='teal' fontFamily='Style Script' />
           </MenuButton>
 
