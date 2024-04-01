@@ -3,6 +3,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
 const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
+const cors = require('cors');
 dotenv.config();
 
 const db = require('./configs/db');
@@ -11,7 +12,13 @@ const db = require('./configs/db');
 db();
 
 const app = express();
-app.use(express.json());
+app.use(express.json()); cors
+//configuring cors
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,PUT,POST,DELETE',
+    credentials: true
+}));
 
 // Define a simple route for testing
 app.get('/', (req, res) => {
@@ -37,18 +44,30 @@ const server = app.listen(PORT, () => console.log(`Server running on port ${PORT
 const io = require('socket.io')(server, {
     pingTimeout: 60000,
     cors: {
-        origin: "https//localhost:3000",
+        origin: "http://localhost:3000",
     }
 });
 
+
 io.on('connection', (socket) => {
-    console.log('a user connected');
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
+    console.log('A user connected');
+    socket.on('setup', (userCredentials) => {
+        socket.join(userCredentials._id);
+        console.log(userCredentials._id);
+        socket.emit('connected');
     });
-    socket.on('chat message', (msg) => {
-        console.log('message: ' + msg);
-        io.emit('chat message', msg);
+    socket.on('join chatSpace', (chatSpace) => {
+        socket.join(chatSpace);
+        console.log('joined chatSpace' + chatSpace);
     });
-}
-);
+    socket.on('new message', (newlyRecievedMessage) => {
+        var space = newlyRecievedMessage.chat;
+
+        if (!chat.chatParticipants) return console.log('No chat partner found');
+        chat.chatParticipants.forEach(user => {
+            if (user._id == newlyRecievedMessage.sender._id) return;
+            socket.in(user._id).emit('message received', newlyRecievedMessage);
+        });
+
+    })
+});

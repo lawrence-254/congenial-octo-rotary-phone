@@ -7,7 +7,7 @@ import ProfileCard from './ProfileCard';
 import UpdateChatModalForGroup from './UpdateChatModalForGroup';
 import axios from 'axios';
 import ChatBubbles from './ChatBubbles';
-import io, { io } from 'socket.io-client';
+import io from 'socket.io-client';
 
 // socket io endpoint
 const ENDPOINT = 'http://localhost:5000';
@@ -19,6 +19,7 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
     const [loading, setLoading] = useState(false);
     const { user, selectedChat, setSelectedChat, chat, setChat } = ChatState();
     // const toast = Toast();
+    const [socketConnection, setSocketConnection] = useState(false);
     const styles = {
         message: {
             display: 'flex',
@@ -32,6 +33,12 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
         }
     };
 
+    useEffect(() => {
+        socket = io(ENDPOINT);
+        socket.emit("setup", user);
+        socket.on("connection", () => setSocketConnection(true));
+
+    }, []);
     const fetchAllMessages = async () => {
         if (!selectedChat) return;
         try {
@@ -45,6 +52,7 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
             const { data } = await axios.get(`/api/message/${selectedChat._id}`, config);
             setMessage(data);
             setLoading(false);
+            socket.emit("join chatSpace", selectedChat._id)
         }
         catch (error) {
             console.log(error.message);
@@ -63,26 +71,17 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
 
     useEffect(() => {
         fetchAllMessages();
+        selectedChatCompare = selectedChat
     }, [selectedChat, reloadChats]);
 
-
     useEffect(() => {
-        const io = io(ENDPOINT);
-        // const socket = io('http://localhost:5000');
-        // socket.on('connect', () => {
-        //     console.log('connected');
-        // });
-        // socket.on('disconnect', () => {
-        //     console.log('disconnected');
-        // });
-        // socket.on('chat message', (msg) => {
-        //     console.log('message: ' + msg);
-        //     setMessage([...message, msg]);
-        // });
-        // return () => {
-        //     socket.disconnect();
-        // }
-    }, [message]);
+        socket.on('message received', (newMessage) => {
+            if (selectedChatCompare && selectedChatCompare._id === newMessage.chatId) {
+                setMessage([...message, newMessage]);
+            }
+        });
+    });
+
     const sendMessage = async (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -105,6 +104,7 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
 
                 setReloadChats(!reloadChats);
                 setNewMessage('');
+                socket.emit('new message', data);
                 setMessage([...message, data]);
                 console.log(data);
             } catch (error) {
@@ -122,7 +122,6 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
                     <IconButton
                         ml={2}
                         icon={<AiOutlineArrowLeft />}
-                        // icon={<AiOutlineUsergroupAdd />}
                         aria-label=''
                         onClick={() => setSelectedChat("")}
                     />
