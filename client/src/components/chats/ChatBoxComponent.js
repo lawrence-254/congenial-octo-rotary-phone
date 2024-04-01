@@ -18,6 +18,8 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
     const [newMessage, setNewMessage] = useState('');
     const [loading, setLoading] = useState(false);
     const { user, selectedChat, setSelectedChat, chat, setChat } = ChatState();
+    const [typing, setTyping] = useState(false);
+    const [isTyping, setIsTyping] = useState(false);
     // const toast = Toast();
     const [socketConnection, setSocketConnection] = useState(false);
     const styles = {
@@ -36,7 +38,9 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
     useEffect(() => {
         socket = io(ENDPOINT);
         socket.emit("setup", user);
-        socket.on("connection", () => setSocketConnection(true));
+        socket.on("connected", () => setSocketConnection(true));
+        socket.on("typing", () => setIsTyping(true));
+        socket.on("not typing", () => setIsTyping(false));
 
     }, []);
     const fetchAllMessages = async () => {
@@ -83,6 +87,7 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
     });
 
     const sendMessage = async (e) => {
+        socket.emit('not typing', selectedChat._id);
         if (e.key === 'Enter') {
             e.preventDefault();
             if (newMessage === '') return;
@@ -114,6 +119,21 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
     }
     const typingHandler = async (e) => {
         setNewMessage(e.target.value);
+        if (!socketConnection) return;
+        if (!typing) {
+            setTyping(true);
+            socket.emit('typing', selectedChat._id);
+        }
+        let lastTyped = new Date().getTime();
+        var timer = 5000;
+        setTimeout(() => {
+            var currentTime = new Date().getTime();
+            if (currentTime - lastTyped >= timer && typing) {
+                setTyping(false);
+                socket.emit('not typing', selectedChat._id);
+            }
+        }, timer);
+
     }
     return (
         <>
@@ -171,6 +191,7 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
                         </div>
                     )}
                     <FormControl onKeyDown={sendMessage} isRequired mt={3}>
+                        {isTyping && <Text fontSize='sm' color='gray.500'>Typing...</Text>}
                         <Input variant='filled'
                             placeholder='Type message'
                             onChange={typingHandler}
@@ -190,33 +211,6 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
                     alignItems='center'
                 >
                     <Text fontSize='2xl' fontWeight='bold'>Select a chat to start messaging</Text>
-                    {/* to be deleted */}
-                    {loading ? (
-                        <Text fontSize='2xl' alignSelf='center' fontWeight='bold'><Spinner /> Loading...</Text>
-                    ) : (
-                        <div style={styles.message}>
-                            {message.map((msg, i) => (
-                                <Box
-                                    key={i}
-                                    p={2}
-                                    mb={2}
-                                    borderRadius='1g'
-                                    borderWidth='1px'
-                                    borderColor='gray.200'
-                                >
-                                    <Text fontSize='lg' fontWeight='bold'>{getSender(user, msg.sender).username}</Text>
-                                    <Text fontSize='lg'>{msg.message}</Text>
-                                </Box>
-                            ))}
-                        </div>
-                    )}
-                    <FormControl onKeyDown={sendMessage} isRequired mt={3}>
-                        <Input variant='filled'
-                            placeholder='Type message'
-                            onChange={typingHandler}
-                            value={newMessage} />
-                    </FormControl>
-                    {/* end of to be deleted */}
                 </Box>
             )}
         </>

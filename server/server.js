@@ -60,6 +60,12 @@ io.on('connection', (socket) => {
         socket.join(chatSpace);
         console.log('joined chatSpace' + chatSpace);
     });
+    socket.on('typing', (chatSpace) => {
+        socket.in(chatSpace).emit('typing');
+    });
+    socket.on('not typing', (chatSpace) => {
+        socket.in(chatSpace).emit('not typing');
+    });
     socket.on('new message', (newlyRecievedMessage) => {
         var space = newlyRecievedMessage.chat;
 
@@ -70,4 +76,9 @@ io.on('connection', (socket) => {
         });
 
     })
+    socket.off('setup', (userCredentials) => {
+        socket.leave(userCredentials._id);
+        console.log(userCredentials._id);
+        socket.emit('disconnected');
+    });
 });
