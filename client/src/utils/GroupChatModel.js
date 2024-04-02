@@ -15,7 +15,7 @@ const GroupChatModel = ({ children }) => {
     const toast = useToast();
     const { user, selectedChat, setSelectedChat, chat, setChat } = ChatState();
     const handleSubmit = async () => {
-        if (!groupChatName || !selectedUsers) {
+        if (!groupChatName || !selectedUsers || selectedUsers.length === 0) {
             toast({
                 title: 'Error.',
                 description: 'Please fill out all fields.',
@@ -54,7 +54,7 @@ const GroupChatModel = ({ children }) => {
                 isClosable: true,
                 position: 'top-left'
             });
-            console.log(error);
+            console.log(error.message);
         }
 
     }
@@ -81,7 +81,7 @@ const GroupChatModel = ({ children }) => {
                 isClosable: true,
                 position: 'top-left'
             });
-            console.log(error);
+            console.log(error.response.data.message);
         }
     }
 
