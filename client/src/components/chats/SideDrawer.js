@@ -16,6 +16,7 @@ import NotificationBadge, { Effect } from 'react-notification-badge';
 
 
 import {
+  Flex,
   useToast,
   Drawer,
   DrawerBody,
@@ -120,13 +121,13 @@ const SideDrawer = () => {
 
   return (
     <>
-      <Box
-        d='flex'
+      <Flex
+        d='row'
         justifyContent='space-between'
         alignItems='center'
         bg='white'
         w='100%'
-        p='5px 10px'
+        p='5px 10px 5px 10px'
         borderWidth='5px'
       >
         <Tooltip label="Search for a user" aria-label="Search for a user" hasArrow placement='bottom-end'>
@@ -151,9 +152,6 @@ const SideDrawer = () => {
 
             <FaRegBell fontSize='8xl' m={1} color='teal' fontFamily='Style Script' />
           </MenuButton>
-
-          // ...
-
           <MenuList>
             <MenuItem>
               {notification.length === 0 ? 'No new notifications' : 'You have ' + notification.length + ' new notifications'}
@@ -184,7 +182,7 @@ const SideDrawer = () => {
             >LOGOUT</MenuItem>
           </MenuList>
         </Menu>
-      </Box >
+      </Flex>
 
       {/* drawer */}
       <Drawer
