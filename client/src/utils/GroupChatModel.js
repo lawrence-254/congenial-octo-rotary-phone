@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { FormControl, Input, useDisclosure, useToast, Spinner, Box } from '@chakra-ui/react';
+import { FormControl, Input, useDisclosure, useToast, Spinner, Box, Avatar, Text } from '@chakra-ui/react';
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button } from '@chakra-ui/react';
 import { ChatState } from '../context/ChatProvider';
 import axios from 'axios';
-import UserListItem from '../components/userUtils/UserListItem';
+// import UserListItem from '../components/userUtils/UserListItem';
 import UserBadge from '../components/userUtils/UserBadge';
 
 const GroupChatModel = ({ children }) => {
@@ -13,7 +13,7 @@ const GroupChatModel = ({ children }) => {
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const toast = useToast();
-    const { user, selectedChat, setSelectedChat, chat, setChat } = ChatState();
+    const { user, chat, setChat } = ChatState();
     const handleSubmit = async () => {
         if (!groupChatName || !selectedUsers || selectedUsers.length === 0) {
             toast({
@@ -72,6 +72,7 @@ const GroupChatModel = ({ children }) => {
             const { data } = await axios.get(`/api/user?search=${searchInput}`, config);
             setSearchResults(data);
             setLoading(false);
+            console.log(data);
         } catch (error) {
             toast({
                 title: 'Error.',
@@ -119,11 +120,46 @@ const GroupChatModel = ({ children }) => {
                     <UserBadge key={u._id} user={u} handleFunction={() => handleDelete(u)} colorScheme='tiffanyBlue' />
                 ))}
             </Box>
+
+
+
             {loading ? <Spinner colorScheme='teal' /> : (
                 searchResults?.map((u) => (
-                    <UserListItem key={u._id} user={u} handleFunction={() => handleGroup(u)} colorScheme='tiffanyBlue' />
+                    <Box
+                        onClick={() => handleGroup(u)}
+                        cursor="pointer"
+                        bg="#E8E8E8"
+                        _hover={{
+                            background: "#38B2AC",
+                            color: "white",
+                        }}
+                        w="100%"
+                        d="flex"
+                        alignItems="center"
+                        color="black"
+                        px={3}
+                        py={2}
+                        mb={2}
+                        borderRadius="lg"
+                    >
+                        <Avatar
+                            mr={2}
+                            size="sm"
+                            cursor="pointer"
+                            name={u.name}
+                            src={u.picture}
+                        />
+                        <Box>
+                            <Text>{u.name}</Text>
+                            <Text fontSize="xs">
+                                <b>Email : </b>
+                                {u.email}
+                            </Text>
+                        </Box>
+                    </Box >
                 ))
             )}
+
         </>
     );
 
@@ -148,3 +184,4 @@ const GroupChatModel = ({ children }) => {
 };
 
 export default GroupChatModel;
+
