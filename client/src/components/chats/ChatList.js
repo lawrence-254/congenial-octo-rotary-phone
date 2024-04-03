@@ -10,7 +10,8 @@ import {
   useToast,
   Spinner,
   Stack,
-  Skeleton
+  Skeleton,
+  Flex
 } from '@chakra-ui/react';
 import axios from 'axios';
 
@@ -53,8 +54,11 @@ const ChatList = ({ reloadChats }) => {
       console.log('User credentials not found in local storage.');
     }
   }, [reloadChats]);
+  // , fetchChats, user
 
-
+  useEffect(() => {
+    console.log(chat);
+  }, [chat]);
 
   return (
     <Box d={{ base: selectedChat ? "none" : "flex", md: 'flex' }}
@@ -66,11 +70,11 @@ const ChatList = ({ reloadChats }) => {
       borderRadius="1g"
       borderWidth="1px"
     >
-      <Box
+      <Flex
         px={3}
         fontSize={{ base: "28px", md: "30px" }}
         fontFamily={{ base: "sans-serif", md: "serif" }}
-        d='flex'
+        d='row'
         w='100%'
         justifyContent={{ base: 'space-between', md: 'flex-start' }}
         alignItems='center'
@@ -78,39 +82,51 @@ const ChatList = ({ reloadChats }) => {
         borderBottomColor='gray.300'
 
       >
-        Chats
+        <Text mr={16}>CHATS</Text>
         <GroupChatModel>
           <Button
             d='flex'
-            fontSize={{ base: "17px", md: "10px", }}
+            fontSize={{ base: "20px", md: "10px", }}
             rightIcon={<AiOutlineUsergroupAdd />}
+            bg='blue.600'
+            ml={8}
           >New Group</Button>
         </GroupChatModel>
-      </Box>
+      </Flex>
       <Box
         d='flex'
         flexDir='column'
         w='100%'
         h='100%'
-        overflowY='auto'>{chat ? (<Stack>
-          {chat.map(c => (
+        overflowY='auto'>
+        {chat ? (<Stack overflowY='scroll'>
+          {chat.map((c) => (
             <Box key={c._id}
               onClick={() => setSelectedChat(c)}
-              bg={selectedChat ? 'teal' : 'grey'}
-              color={selectedChat ? 'black' : 'teal'}
+              bg={selectedChat ? 'grey' : 'teal'}
+              color={selectedChat ? 'teal' : 'black'}
               p={3}
+              mb={3}
               borderRadius="lg"
             >
-              <Text>{!c.chatTypeGroup ? (
-                getSender(loggedUser, c.chatParticipants.name)
-              ) : c.name}</Text>
+              <Text>
+                {!c.chatTypeGroup ?
+                  (getSender(loggedUser, c.chatParticipants))
+                  : c.chatTitle
+                }
+              </Text>
             </Box>
           ))}
+
         </Stack>
         ) : (
-          <Stack><Skeleton><Spinner d='flex' ml='auto' color='teal' /></Skeleton>
-          </Stack>)}</Box>
-    </Box>
+          <Stack>
+            <Skeleton>
+              <Spinner d='flex' ml='auto' color='teal' />
+            </Skeleton>
+          </Stack>)}
+      </Box>
+    </Box >
   )
 }
 
