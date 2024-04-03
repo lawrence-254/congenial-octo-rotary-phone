@@ -51,25 +51,22 @@ export const isSameUser = (messages, m, i) => {
     // Check if the index is greater than 0 and if the sender of the previous message is the same as the sender of the current message
     return i > 0 && messages[i - 1].sender._id === m.sender._id;
 };
-// export const getSender = (loggedUser, chatParticipants) => {
-//     if (chatParticipants && chatParticipants.length >= 2) {
-//         if (chatParticipants[0]._id === loggedUser?._id) {
-//             return chatParticipants[1].name;
-//         } else {
-//             return chatParticipants[0].name;
-//         }
-//     } else {
-//         return "Unknown Sender";
-//     }
+export const getSender = (loggedUser, chatParticipants) => {
+    if (chatParticipants && chatParticipants.length >= 2) {
+        if (chatParticipants[0]._id === loggedUser?._id) {
+            return chatParticipants[1].name;
+        } else {
+            return chatParticipants[0].name;
+        }
+    } else {
+        return "Unknown Sender";
+    }
 
-// };
-
-
-
-
-export const getSender = (loggedUser, users) => {
-    return users[0]?._id === loggedUser?._id ? users[1].name : users[0].name;
 };
+
+
+
+
 
 
 // export const getSender = (loggedUser, users) => {
