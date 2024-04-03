@@ -143,7 +143,7 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
     return (
         <>
             {selectedChat ? (<>
-                <Text fontSize='2xl' fontWeight='bold' mb={2}>title
+                <Text fontSize='2xl' fontWeight='bold' mb={2} p={3} w="100%" alignItems="center" justifyContent={{ base: "space-between" }}>
                     <IconButton
                         ml={2}
                         icon={<AiOutlineArrowLeft />}
@@ -156,13 +156,17 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
                             <ProfileCard user={getFullSender(user, selectedChat.chatParticipants)} />
                         </>
                     ) : (
-                        <>{selectedChat.chatTitle.toUpperCase()}</>
+                        <>
+                            {selectedChat.chatTitle.toUpperCase()}
+                                <UpdateChatModalForGroup
+                                    reloadChats={reloadChats}
+                                    setReloadChats={setReloadChats}
+                                    fetchAllMessages={fetchAllMessages} />
+                        </>
+
                     )}
 
-                    <UpdateChatModalForGroup
-                        reloadChats={reloadChats}
-                        setReloadChats={setReloadChats}
-                        fetchAllMessages={fetchAllMessages} />
+
 
                 </Text>
                 <Box
@@ -177,31 +181,31 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
                     overflowY='hidden'
                 >
 
-                </Box>
-                <Box
-                    w='100%'
-                    h='80%'
-                    p={3}
-                    borderRadius='1g'
-                    borderWidth='1px'
-                    overflowY='scroll'
-                    backgroundColor='white'>
-                    {loading ? (
-                        <Text fontSize='2xl' alignSelf='center' fontWeight='bold'><Spinner /> Loading...</Text>
-                    ) : (
-                        <div style={styles.message}>
+                    <Box
+                        w='100%'
+                        h='80%'
+                        p={3}
+                        borderRadius='1g'
+                        borderWidth='1px'
+                        overflowY='scroll'
+                        backgroundColor='white'>
+                        {loading ? (
+                            <Text fontSize='2xl' alignSelf='center' fontWeight='bold'><Spinner /> Loading...</Text>
+                        ) : (
+                            <div style={styles.message}>
 
-                            <ChatBubbles message={message} />
+                                <ChatBubbles message={message} />
 
-                        </div>
-                    )}
-                    <FormControl onKeyDown={sendMessage} isRequired mt={3}>
-                        {isTyping && <Text fontSize='sm' color='gray.500'>Typing...</Text>}
-                        <Input variant='filled'
-                            placeholder='Type message'
-                            onChange={typingHandler}
-                            value={newMessage} />
-                    </FormControl>
+                            </div>
+                        )}
+                        <FormControl onKeyDown={sendMessage} isRequired mt={3}>
+                            {isTyping && <Text fontSize='sm' color='gray.500'>Typing...</Text>}
+                            <Input variant='filled'
+                                placeholder='Type message'
+                                onChange={typingHandler}
+                                value={newMessage} />
+                        </FormControl>
+                    </Box>
                 </Box>
             </>) : (
                 <Box
