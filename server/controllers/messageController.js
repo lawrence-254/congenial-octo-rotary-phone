@@ -8,7 +8,7 @@ const sendMessage = asyncHandler(async (req, res) => {
     const { chatId, content } = req.body;
 
     if (!chatId || !content) {
-        res.status(400);
+        return res.status(400);
         throw new Error("Chat ID and message are required");
         console.log("Chat ID and message are required");
     }
