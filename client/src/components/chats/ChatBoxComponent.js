@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChatState } from '../../context/ChatProvider';
-import { Box, FormControl, IconButton, Input, Spinner, Text } from '@chakra-ui/react'
+import { Box, FormControl, IconButton, Input, Spinner, Text, InputGroup, InputRightElement } from '@chakra-ui/react'
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { getSender, getFullSender } from '../../config/chatFunctions';
 import ProfileCard from './ProfileCard';
@@ -8,6 +8,7 @@ import UpdateChatModalForGroup from './UpdateChatModalForGroup';
 import axios from 'axios';
 import ChatBubbles from './ChatBubbles';
 import io from 'socket.io-client';
+import { IoMdSend } from "react-icons/io";
 
 // socket io endpoint
 const ENDPOINT = 'http://localhost:5000';
@@ -91,37 +92,44 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
         });
     });
 
-    const sendMessage = async (e) => {
+    const sendMessage = async () => {
         socket.emit('not typing', selectedChat._id);
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            if (newMessage === '') return;
-            try {
-                const messageData = {
-                    chatId: selectedChat._id,
-                    message: newMessage,
-                    sender: user._id,
-                }
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${user.token}`
-                    }
-                }
 
-                const response = await axios.post('/api/message', messageData, config);
-                const data = await response.json();
+        if (newMessage === '') return;
 
-                setReloadChats(!reloadChats);
-                setNewMessage('');
-                socket.emit('new message', data);
-                setMessage([...message, data]);
-                console.log(data);
-            } catch (error) {
-                console.log(error);
-            }
+        try {
+            const messageData = {
+                chatId: selectedChat._id,
+                content: newMessage,
+                sender: user._id,
+            };
+
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                }
+            };
+
+            const response = await axios.post('/api/message', messageData, config);
+            const data = await response.data;
+
+            setReloadChats(!reloadChats);
+            setNewMessage('');
+            socket.emit('new message', data);
+            setMessage([...message, data]);
+            console.log(data);
+        } catch (error) {
+            console.log(error);
         }
-    }
+    };
+
+    const handleEnterKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    };
+
     const typingHandler = async (e) => {
         setNewMessage(e.target.value);
         if (!socketConnection) return;
@@ -158,10 +166,10 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
                     ) : (
                         <>
                             {selectedChat.chatTitle.toUpperCase()}
-                                <UpdateChatModalForGroup
-                                    reloadChats={reloadChats}
-                                    setReloadChats={setReloadChats}
-                                    fetchAllMessages={fetchAllMessages} />
+                            <UpdateChatModalForGroup
+                                reloadChats={reloadChats}
+                                setReloadChats={setReloadChats}
+                                fetchAllMessages={fetchAllMessages} />
                         </>
 
                     )}
@@ -188,7 +196,7 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
                         borderRadius='1g'
                         borderWidth='1px'
                         overflowY='scroll'
-                        backgroundColor='white'>
+                        backgroundColor='teal.200'>
                         {loading ? (
                             <Text fontSize='2xl' alignSelf='center' fontWeight='bold'><Spinner /> Loading...</Text>
                         ) : (
@@ -198,14 +206,30 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
 
                             </div>
                         )}
-                        <FormControl onKeyDown={sendMessage} isRequired mt={3}>
-                            {isTyping && <Text fontSize='sm' color='gray.500'>Typing...</Text>}
-                            <Input variant='filled'
+
+                    </Box>
+                    <FormControl onKeyDown={handleEnterKeyPress} isRequired mt={3}>
+                        {isTyping && <Text fontSize='sm' color='gray.500'>Typing...</Text>}
+                        <InputGroup>
+                            <Input
+                                variant='filled'
+                                backgroundColor='green.200'
                                 placeholder='Type message'
                                 onChange={typingHandler}
-                                value={newMessage} />
-                        </FormControl>
-                    </Box>
+                                value={newMessage}
+                            />
+                            <InputRightElement width="4.5rem">
+                                <IconButton
+                                    aria-label="Send message"
+                                    icon={<IoMdSend />}
+                                    onClick={sendMessage}
+                                    colorScheme="green"
+                                    variant="solid"
+                                />
+                            </InputRightElement>
+                        </InputGroup>
+
+                    </FormControl>
                 </Box>
             </>) : (
                 <Box

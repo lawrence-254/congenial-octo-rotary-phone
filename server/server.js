@@ -67,7 +67,7 @@ io.on('connection', (socket) => {
         socket.in(chatSpace).emit('not typing');
     });
     socket.on('new message', (newlyRecievedMessage) => {
-        var space = newlyRecievedMessage.chat;
+        var chat = newlyRecievedMessage.chat;
 
         if (!chat.chatParticipants) return console.log('No chat partner found');
         chat.chatParticipants.forEach(user => {
@@ -82,3 +82,4 @@ io.on('connection', (socket) => {
         socket.emit('disconnected');
     });
 });
+
