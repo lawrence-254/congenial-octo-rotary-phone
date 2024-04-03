@@ -33,7 +33,7 @@ const GroupChatModel = ({ children }) => {
                     Authorization: `Bearer ${user.token}`
                 }
             };
-            const { data } = await axios.post('/api/chat/group', { name: groupChatName, users: selectedUsers.map((u) => u._id) }, config);
+            const { data } = await axios.post('/api/chat/group', { chatTitle: groupChatName, chatParticipants: selectedUsers.map((u) => u._id) }, config);
             setChat([data, ...chat]);
             onClose();
             toast({
