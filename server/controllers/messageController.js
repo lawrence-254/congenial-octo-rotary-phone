@@ -24,7 +24,7 @@ const sendMessage = asyncHandler(async (req, res) => {
 
         message = await message.populate("sender", "name email picture");
         message = await message.populate("chat");
-        message = await User.populate(message, { path: "chat.users", select: "name email picture" });
+        message = await User.populate(message, { path: "chat.chatParticipants", select: "name email picture" });
 
         await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message })
         res.status(201).json(message);
