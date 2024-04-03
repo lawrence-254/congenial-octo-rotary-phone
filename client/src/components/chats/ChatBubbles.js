@@ -18,33 +18,38 @@ const ChatBubbles = ({ message }) => {
                 mb={2}
                 borderRadius='1g'
                 borderWidth='1px'
-                borderColor='gray.200'
+                borderColor='#81E6D9'
             >
                 {(isSameUser(message, msg, i, user._id) || isLastMessage(message, msg, i, user._id))
-                    && (<Tooltip label={msg.sender.chatParticipants}
-                        hasArrow
-                        placement='bottom-start' >
-                        <Avatar
-                            name={msg.sender.chatParticipants}
-                            src={msg.sender.picture}
-                            size='sm'
-                            mr={2}
-                            mt='6px'
-                        />
-                    </Tooltip>)}
+                    && (
+                        <Tooltip label={msg.sender.chatParticipants} hasArrow placement='bottom-start'>
+                            <div>
+                                <Avatar
+                                    name={msg.sender.chatParticipants}
+                                    src={msg.sender.picture}
+                                    size='sm'
+                                    mr={1}
+                                    mt='6px'
+                                    cursor='pointer'
+                                />
+                                <Text>{msg.sender.chatParticipants}</Text>
+                            </div>
+                        </Tooltip>
+
+                    )}
 
 
 
-                <Text style={{
-                    backgroundColor: `${msg.sender._id === user._id ? 'blue' : 'gray'
+                <span style={{
+                    backgroundColor: `${msg.sender._id === user._id ? '#4299E1' : 'gray'
                         }`,
                     fontWeight: 'bold',
                     borderRadius: "20px",
                     padding: "3px 12px",
-                    maxWidth: "70%",
-                    marginLeft: isSameSenderMargin(message, msg, i, user._id) ? 'auto' : '0',
-                    marginTop: isSameUser(message, msg, i, user._id) ? '4' : '10px',
-                }} >{msg.content}</Text>
+                    maxWidth: "55%",
+                    marginRight: isSameSenderMargin(message, msg, i, user._id) ? '0' : '',
+                    marginTop: isSameUser(message, msg, i, user._id) ? 4 : 10,
+                }} >{msg.content}</span>
             </Box>
         ))}</ScrollableFeed>
     )
