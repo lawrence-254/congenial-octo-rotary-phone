@@ -9,7 +9,8 @@ const ChatArea = ({ reloadChats, setReloadChats }) => {
     const { selectedChat } = ChatState()
 
     return (
-        <Box backgroundColor='cream'
+        <Box
+            backgroundColor='cream'
             d={{ base: selectedChat ? "flex" : "none", md: 'flex' }}
             w={{ base: '100%', md: '70%' }}
             alignItems='center'
@@ -18,6 +19,7 @@ const ChatArea = ({ reloadChats, setReloadChats }) => {
             borderRadius='1g'
             borderWidth='1px'
         >
+
             <ChatBoxComponent reloadChats={reloadChats} setReloadChats={setReloadChats} />
         </Box>
     )
