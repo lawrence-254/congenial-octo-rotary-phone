@@ -35,21 +35,6 @@ const UpdateChatModalForGroup = ({ reloadChats, setReloadChats, fetchAllMessages
             setLoading(false);
         }
 
-        // try {
-        //     setLoading(true);
-        //     const config = {
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             Authorization: `Bearer ${user.token}`
-        //         }
-        //     };
-
-        //     const { data } = axios.put('/api/chat/groupRemove', { chatId: selectedChat._id, userId: user._id }, config);
-
-        //     setSelectedChat(data);
-        //     setReloadChats(!reloadChats);
-        //     setLoading(false);
-        // }
         catch (error) {
             toast({ title: 'Error', description: error.message, status: 'error', duration: 3000, isClosable: true });
             setLoading(false);
