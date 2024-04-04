@@ -8,6 +8,8 @@ import UserListItem from '../userUtils/UserListItem';
 import axios from 'axios';
 
 const UpdateChatModalForGroup = ({ reloadChats, setReloadChats, fetchAllMessages }) => {
+
+
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { user, selectedChat, setSelectedChat } = ChatState();
     const [groupChatName, setGroupChatName] = useState('');
