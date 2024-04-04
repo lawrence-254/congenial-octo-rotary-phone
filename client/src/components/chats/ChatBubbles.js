@@ -8,7 +8,7 @@ import ScrollableFeed from 'react-scrollable-feed'
 
 
 const ChatBubbles = ({ message }) => {
-    const { user, selectedChat, setSelectedChat, chat, setChat } = ChatState();
+    const { user } = ChatState();
 
     return (
         <ScrollableFeed>{message && message.map((msg, i) => (

@@ -9,9 +9,9 @@ import axios from 'axios';
 
 const UpdateChatModalForGroup = ({ reloadChats, setReloadChats, fetchAllMessages }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { user, selectedChat, setSelectedChat, chat, setChat } = ChatState();
+    const { user, selectedChat, setSelectedChat } = ChatState();
     const [groupChatName, setGroupChatName] = useState('');
-    const [search, setSearch] = useState([]);
+    // const [search, setSearch] = useState([]);
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const [renameLoading, setRenameLoading] = useState(false);
