@@ -61,13 +61,7 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
         }
         catch (error) {
             console.log(error.message);
-            // toast({
-            //     title: 'Error',
-            //     description: error.message,
-            //     status: 'error',
-            //     duration: 9000,
-            //     isClosable: true
-            // })
+  
 
         }
 
