@@ -4,14 +4,16 @@ const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
 const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
 const cors = require('cors');
-dotenv.config();
-
+const path = require('path');
 const db = require('./configs/db');
 
+//=======================================================
+dotenv.config();
 // Establish database connection
 db();
-
+//=======================================================
 const app = express();
+// Middleware to parse JSON data
 app.use(express.json()); cors
 //configuring cors
 app.use(cors({
@@ -20,10 +22,7 @@ app.use(cors({
     credentials: true
 }));
 
-// Define a simple route for testing
-app.get('/', (req, res) => {
-    res.send('Hello World');
-});
+//===============================================================
 
 // Mount user routes under '/api/user'
 app.use('/api/user', userRoutes);
@@ -31,14 +30,43 @@ app.use('/api/user', userRoutes);
 app.use('/api/chat', require('./routes/chatRoutes'));
 //message routes
 app.use('/api/message', require('./routes/messageRoutes'));
+
+//===============================================================
+
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+const __dirname0 = path.resolve();
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname0, '/client/build')));
+
+    app.get('*', (req, res) =>
+        res.sendFile(path.resolve(__dirname0, 'client', 'build', 'index.html'))
+    );
+} else {
+    // Define a simple route for testing
+    app.get('/', (req, res) => {
+        res.send('API is running....');
+    });
+}
+
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+//===============================================================
+
+
 // Middleware to handle 404 Not Found errors
 app.use(notFound);
 
 // Middleware to handle all other errors
 app.use(errorHandler);
 
+//===============================================================
+
 // Define port to run server
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
+//===============================================================
 // Start the server
 const server = app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 const io = require('socket.io')(server, {
@@ -48,6 +76,8 @@ const io = require('socket.io')(server, {
     }
 });
 
+
+// Socket.io
 
 io.on('connection', (socket) => {
     console.log('A user connected');

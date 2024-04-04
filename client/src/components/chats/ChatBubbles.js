@@ -47,7 +47,7 @@ const ChatBubbles = ({ message }) => {
                     borderRadius: "20px",
                     padding: "3px 12px",
                     maxWidth: "55%",
-                    marginRight: isSameSenderMargin(message, msg, i, user._id) ? '0' : '',
+                    marginRight: isSameSenderMargin(message, msg, i, user._id) ? '0' : (msg.sender._id === user._id ? '10px' : ''),
                     marginTop: isSameUser(message, msg, i, user._id) ? 4 : 10,
                 }} >{msg.content}</span>
             </Box>
