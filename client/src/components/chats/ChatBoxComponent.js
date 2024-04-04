@@ -4,7 +4,7 @@ import { Box, FormControl, IconButton, Input, Spinner, Text, InputGroup, InputRi
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { getSender, getFullSender } from '../../config/chatFunctions';
 import ProfileCard from './ProfileCard';
-import UpdateChatModalForGroup from './UpdateChatModalForGroup';
+import UpdateChatModalForGroup from '../../../components/chats/UpdateChatModalForGroup';
 import axios from 'axios';
 import ChatBubbles from './ChatBubbles';
 import io from 'socket.io-client';
@@ -61,7 +61,7 @@ const ChatBoxComponent = ({ reloadChats, setReloadChats }) => {
         }
         catch (error) {
             console.log(error.message);
-  
+
 
         }
 
